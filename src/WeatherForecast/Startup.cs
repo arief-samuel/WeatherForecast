@@ -36,6 +36,9 @@ namespace WeatherForecast
             services.AddHttpClient<WeatherClient>()
                 .AddTransientHttpErrorPolicy(Builder => Builder.WaitAndRetryAsync(10, retryAttempp => TimeSpan.FromSeconds(Math.Pow(2, retryAttempp))))
                 .AddTransientHttpErrorPolicy(Builder => Builder.CircuitBreakerAsync(3, TimeSpan.FromSeconds(10)));
+
+            services.AddHealthChecks()
+                .AddCheck<ExternalEndpointHealthCheck>("OpenWeather");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +58,7 @@ namespace WeatherForecast
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
