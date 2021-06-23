@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
 using WeatherForecast.Service;
 
 namespace WeatherForecast
@@ -32,7 +33,8 @@ namespace WeatherForecast
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherForecast", Version = "v1" });
             });
-            services.AddHttpClient<WeatherClient>();
+            services.AddHttpClient<WeatherClient>()
+                .AddTransientHttpErrorPolicy(Builder => Builder.WaitAndRetryAsync(10, retryAttempp => TimeSpan.FromSeconds(Math.Pow(2, retryAttempp))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
