@@ -7,6 +7,7 @@ Notes :
 - typo for weathers on forecast record
 - 36: 08 Add Polly
 - Add Circuit Breaker
+- 46:36 Add Health Check
 ## Setup VSCode
 - Add "group": {"kind": "build","isDefault": true} on tasks.json to set default is build / shortcut so the build propmt doesn't pop up again in the he next section when we hit ctrl + shift + b
 - Set "uriFormat": "%s/swagger" on launch.json for set endpoint or default path when launch 
